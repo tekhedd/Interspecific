@@ -5,8 +5,9 @@ Interspecific is a .NET 4.0 embedded HTTP/REST server with a focus on simplicity
 on performance.
 
 Socket processing is based on  [MediaBrowser/SocketHttpListener](https://github.com/MediaBrowser/SocketHttpListener).
-This enables custom authentication, and also allows client software to listen on any port without admin 
-priveleges, and without messing with .NET's HTTP configuration. This comes at the cost of .NET's built-in
+This is different from HttpListener-based implementations, because it enables custom authentication headers, 
+allows client software to listen on any port without admin priveleges, and does not require 
+fiddling with the .NET framework's HTTP configuration. This comes at the cost of .NET's built-in
 HTTPS support, but whether that is a disadvantage is debatable.
 
 ## History ##
