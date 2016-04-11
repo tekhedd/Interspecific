@@ -50,7 +50,7 @@
       <HintPath>packages\Patterns.Logging.1.0.0.2\lib\portable-net45+sl4+wp71+win8+wpa81\Patterns.Logging.dll</HintPath>
     </Reference>
     <Reference Include="SocketHttpListener">
-      <HintPath>packages\SocketHttpListener.1.0.0.25\lib\net45\SocketHttpListener.dll</HintPath>
+      <HintPath>packages\SocketHttpListener.1.0.0.29\lib\net45\SocketHttpListener.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +73,9 @@
     <Compile Include="Util\Logging\ILog.cs" />
     <Compile Include="Util\Logging\LogToEventLog.cs" />
     <Compile Include="Util\Logging\LogToConsole.cs" />
+    <Compile Include="Util\MatchExtensions.cs" />
+    <Compile Include="Util\StringConverter.cs" />
+    <Compile Include="Util\HttpListenerRequestExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

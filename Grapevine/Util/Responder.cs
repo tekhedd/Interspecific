@@ -58,7 +58,9 @@ namespace Grapevine
         }
 
         /// <summary>
-        /// Default response method when a route or file is not found
+        /// Default response method when a route or file is not found. You can override this to 
+        /// customize RESTServer's response. By default, the response may be cached,
+        /// so this is not suitable for use in REST interfaces where a 404 response is not permanent.
         /// </summary>
         protected virtual void NotFound(HttpListenerContext context, string payload = "<h1>Not Found</h1>", ContentType contentType = ContentType.HTML)
         {
@@ -72,7 +74,10 @@ namespace Grapevine
         }
 
         /// <summary>
-        /// Respond to a request using text
+        /// Respond to a request using text.
+        /// 
+        /// Does not set cache-control, so the response may be cached. Useful for serving simple text responses that
+        /// you do not expect to change.
         /// </summary>
         protected void SendTextResponse(HttpListenerContext context, string payload, Encoding encoding = null)
         {

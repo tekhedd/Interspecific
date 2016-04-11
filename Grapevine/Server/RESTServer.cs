@@ -56,6 +56,7 @@ namespace Grapevine.Server
             this.MaxThreads = config.MaxThreads;
             this.AutoLoadRestResources = config.AutoLoadRestResources;
             this.Tag = tag;
+            this.ServerHeader = config.ServerHeader;
       
             this.WebRoot = config.WebRoot;
             if (object.ReferenceEquals(this.WebRoot, null))
@@ -331,6 +332,12 @@ namespace Grapevine.Server
 			get;
 			set;
 		}
+      
+        public string ServerHeader
+        {
+            get;
+            set;
+        }
 
         #endregion
 
@@ -446,6 +453,9 @@ namespace Grapevine.Server
         {
             try
             {
+                if (ServerHeader != null)
+                    context.Response.Headers["Server"] = ServerHeader;
+            
                 var notfound = true;
                 if (this._routeCache.FindAndInvokeRoute(context))
                 {
