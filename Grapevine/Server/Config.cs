@@ -42,6 +42,14 @@
         /// If false, use RESTServer.AddRoute() to add routes manually.
         /// </summary>
         public bool AutoLoadRestResources { get; set; }
+      
+        /// <summary>
+        /// Value set by default as the "Server:" HTTP header in HttpListener responsese. 
+        /// If null, the default value will be used
+        /// as supplied by the underlying framework. (Usually "Mono-HTTPAPI/1.0".)
+        /// </summary>
+        /// <value>The server header.</value>
+        public string ServerHeader { get; set; }
 
         public Config()
         {
@@ -51,6 +59,7 @@
             this.DirIndex = "index.html";
             this.MaxThreads = 5;
             this.AutoLoadRestResources = true;
+            this.ServerHeader = null;
         }
     }
 }

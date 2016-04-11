@@ -28,7 +28,8 @@ public class TestFixture
       WebRoot = "../../Data/web",
       DirIndex = "myindex.html",
       MaxThreads = 3,
-      AutoLoadRestResources = false
+      AutoLoadRestResources = false,
+      ServerHeader = "MyTestServer/2.3"
    };
 
    
@@ -88,6 +89,30 @@ public class TestFixture
    {
       string body = _HttpGet( root + "/test/query/one/two" );
       Assert.AreEqual( "one,two", body );
+   }
+   
+   [Test]
+   public void ServerHeaderTest()
+   {
+      string header = _GetServerHeader(root);
+      Assert.AreEqual("MyTestServer/2.3", header);
+      
+      _host.ServerHeader = null;
+      header = _GetServerHeader(root);
+      Assert.AreEqual("Mono-HTTPAPI/1.0", header);
+      
+      _host.ServerHeader = "Ponies/1.0";
+      header = _GetServerHeader(root);
+      Assert.AreEqual("Ponies/1.0", header);
+   }
+   
+   private string _GetServerHeader(string url)
+   {
+      SysNet.HttpWebRequest request = (SysNet.HttpWebRequest)SysNet.WebRequest.Create( url );
+      using (SysNet.HttpWebResponse response = (SysNet.HttpWebResponse)request.GetResponse())
+      {
+         return response.Headers["Server"];
+      }
    }
    
    // gets a url and assumes it's text
