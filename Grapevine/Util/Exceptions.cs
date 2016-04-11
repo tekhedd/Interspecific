@@ -25,4 +25,13 @@ namespace Grapevine
 
         public ClientStateException(string message, Exception inner) : base(message, inner) { }
     }
+   
+   /// <summary>
+   /// Same as ArgumentException, but subclassed so you can detect that it is specifically
+   /// a URL or query parameter that is invalid (and map to a 400 error if desired).
+   /// </summary>
+   public class RESTArgumentException : ArgumentException
+   {
+      public RESTArgumentException(string message, string name) : base(message, name) { }
+   }
 }
