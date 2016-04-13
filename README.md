@@ -41,6 +41,10 @@ in C# what would otherwise require a script.
 
 - You will likely be required to [open a port in your firewall](http://www.lmgtfy.com/?q=how+to+open+a+port+on+windows) for remote computers to be able to send requests to your application. Grapevine will not [automatically](http://msdn.microsoft.com/en-us/library/aa366418%28VS.85%29.aspx) do that for you.  You might want to do that during the [installation of your application](http://www.codeproject.com/Articles/14906/Open-Windows-Firewall-During-Installation).
 
+## Available on NuGet
+
+https://www.nuget.org/packages/Interspecific/
+
 ## Contact ##
 
 Please don't bother Scott with Interspecific questions; we have diverged enough that this is not appropriate.
