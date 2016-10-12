@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Interspecific</id>
-    <version>1.0.2.2</version>
+    <version>1.0.2.3</version>
     <title>Interspecific</title>
     <authors>Scott Offen (and various Interspecific project contributors)</authors>
     <owners></owners>
@@ -15,7 +15,7 @@
     <tags>REST HTTP C# Networking</tags>
     <dependencies>
       <!-- dependency id="Patterns.Logging" version="1.0.0.2" / -->
-      <dependency id="SocketHttpListener" version="1.0.0.29" />
+      <dependency id="SocketHttpListener" version="1.0.0.40" />
     </dependencies>
   </metadata>
   <files>

@@ -49,7 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="SocketHttpListener">
-      <HintPath>..\packages\SocketHttpListener.1.0.0.29\lib\net45\SocketHttpListener.dll</HintPath>
+      <HintPath>..\packages\SocketHttpListener.1.0.0.40\lib\net45\SocketHttpListener.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
