@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Interspecific</id>
-    <version>1.0.2.3</version>
+    <version>1.0.2.4</version>
     <title>Interspecific</title>
     <authors>Scott Offen (and various Interspecific project contributors)</authors>
     <owners></owners>
@@ -10,7 +10,9 @@
     <projectUrl>https://github.com/tekhedd/Interspecific</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Interspecific REST HTTP server framework. See https://github.com/tekhedd/Interspecific</description>
-    <releaseNotes>Added some helper functions.</releaseNotes>
+    <releaseNotes>
+        Updated to the latest version of SocketHttpListener.
+    </releaseNotes>
     <copyright>Copyright 2014-2016</copyright>
     <tags>REST HTTP C# Networking</tags>
     <dependencies>

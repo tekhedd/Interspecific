@@ -47,7 +47,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="SocketHttpListener">
-      <HintPath>packages\SocketHttpListener.1.0.0.29\lib\net45\SocketHttpListener.dll</HintPath>
+      <HintPath>packages\SocketHttpListener.1.0.0.40\lib\net45\SocketHttpListener.dll</HintPath>
     </Reference>
     <Reference Include="Patterns.Logging">
       <HintPath>packages\Patterns.Logging.1.0.0.3\lib\portable-net45+dnxcore50+sl4+wp71+win8+wpa81\Patterns.Logging.dll</HintPath>

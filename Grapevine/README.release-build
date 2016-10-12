@@ -2,3 +2,5 @@ Project version is located in:
 
  * Properties/AssemblyInfo.cs
  * Interspecific.nuspec
+
+You probably also want to update the release notes in the nuspec file!
