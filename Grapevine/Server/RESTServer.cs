@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -376,6 +377,7 @@ namespace Grapevine.Server
                     for (int i = 0; i < _workers.Length; i++)
                     {
                         _workers[i] = new Thread(Worker);
+                        _workers[i].Name = String.Format("HTTP Listener[{0}]", i);
                         _workers[i].Start();
                     }
 
@@ -389,24 +391,60 @@ namespace Grapevine.Server
             }
         }
 
-        /// <summary>
-        /// Attempts to stop the server; executes delegates for OnBeforeStop and OnAfterStop
-        /// </summary>
         public void Stop()
         {
+            Stop(TimeSpan.FromMinutes(5));
+        }
+
+        /// <summary>
+        /// Attempts to stop the server; executes delegates for OnBeforeStop and OnAfterStop
+        /// 
+        /// After timeout is reached, threads and remote connections will be killed 
+        /// without waiting for data.
+        /// </summary>
+        public void Stop(TimeSpan timeout)
+        {
+            DateTime startTime = DateTime.Now;
             try
             {
                 this.FireDelegate(this.OnBeforeStop);
 
-                this._stop.Set();
-                if (!object.ReferenceEquals(this._workers, null))
+                this._stop.Set();      // Signal worker threads to gracefully stop
+
+                // Use the first half of the timeout for graceful closure.
+                
+                TimeSpan halfTime = new TimeSpan(timeout.Ticks / 2);
+                foreach (Thread worker in this._workers)
                 {
-                    foreach (Thread worker in this._workers)
+                    TimeSpan timeLeft = halfTime - (DateTime.Now - startTime);
+                    if (timeLeft < TimeSpan.Zero)
+                        timeLeft = TimeSpan.Zero;
+
+                    worker.Join(timeLeft);
+                }
+               
+                this._listener.Stop(); // Signal listener to ungracefully stop/forcefully close connections
+               
+                // If any workers still won't exit, forcefully abort them.
+                foreach (Thread worker in this._workers)
+                {
+                    if (worker.IsAlive) 
                     {
-                        worker.Join();
+                        TimeSpan timeLeft = timeout - (DateTime.Now - startTime);
+                        if (timeLeft < TimeSpan.Zero)
+                            timeLeft = TimeSpan.Zero;
+                            
+                        Trace.TraceInformation("Waiting for unresponsive worker thread: {0} ({1})", worker.Name, timeLeft);
+                        worker.Join(timeLeft);
+                        
+                        if (worker.IsAlive) // WHY WON'T YOU DIE?
+                        {
+                            Trace.TraceWarning("Aborting unresponsive HTTP worker thread: {0}", worker.Name);
+                            worker.Abort();
+                        }
                     }
                 }
-                this._listener.Stop();
+               
                 this.IsListening = false;
 
                 this.FireDelegate(this.OnAfterStop);
