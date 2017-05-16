@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Interspecific")]
 [assembly: AssemblyDescription("Interspecific REST HTTP server framework. See https://github.com/tekhedd/Interspecific")]
 [assembly: AssemblyCompany("Interspecific project contributors")]
-[assembly: AssemblyCopyright("© 2014-2016 Scott Offen and Interspecific project contributors")]
+[assembly: AssemblyCopyright("© 2014-2017 Scott Offen and other project contributors")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -20,5 +20,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.1.0.*")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("2.0.0.*")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

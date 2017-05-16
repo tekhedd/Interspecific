@@ -14,28 +14,6 @@ namespace Interspecific
     public abstract class Responder
     {
         /// <summary>
-        /// Returns a string representation of the request body
-        /// </summary>
-        protected string GetPayload(HttpListenerRequest request)
-        {
-            try
-            {
-                string data;
-                using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
-                {
-                    data = reader.ReadToEnd();
-                }
-                return data;
-            }
-            catch (Exception e)
-            {
-                EventLogger.Log(e);
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Default response method to an Internal Server Error
         /// </summary>
         protected virtual void InternalServerError(HttpListenerContext context, Exception e)

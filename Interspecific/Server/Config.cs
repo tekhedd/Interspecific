@@ -50,7 +50,13 @@
         /// </summary>
         /// <value>The server header.</value>
         public string ServerHeader { get; set; }
-
+        
+        /// <summary>
+        /// You can override the trace source name on a per-server basis by 
+        /// modifying this property. 
+        /// </summary>
+        public string TraceSourceName { get; set; }
+        
         public Config()
         {
             this.Protocol = "http";
@@ -60,6 +66,7 @@
             this.MaxThreads = 5;
             this.AutoLoadRestResources = true;
             this.ServerHeader = null;
+            this.TraceSourceName = "Interspecific.Server";
         }
     }
 }

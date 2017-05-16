@@ -27,6 +27,22 @@ namespace Interspecific.Server
         private readonly ManualResetEvent _stop = new ManualResetEvent(false);
         private readonly ManualResetEvent _ready = new ManualResetEvent(false);
         private Queue<HttpListenerContext> _queue = new Queue<HttpListenerContext>();
+        
+        /// <summary>
+        /// Trace source for the Interspecific.Server namespace. Add trace listeners
+        /// </summary>
+        private readonly TraceSource _trace;
+        
+        /// <summary>
+        /// Add/remove trace listeners to this server's trace source via this collection.
+        /// </summary>
+        public TraceListenerCollection Listeners 
+        {
+            get
+            {
+                return _trace.Listeners;
+            }
+        }
 
         #endregion
 
@@ -48,9 +64,16 @@ namespace Interspecific.Server
 
         public RESTServer(Config config, object tag = null) 
         {
-            // TODO: create Patterns.Logging logger to feed Tracelog, or update
-            //       HttpListener to use Trace properly.
+            this._trace = new TraceSource( config.TraceSourceName );
+            
+            // TODO: update HttpListener to use Trace / TraceSource.
             this._listener = new HttpListener();
+            
+            // TODO: don't use hard coded timeouts
+            _listener.TimeoutManager.DrainEntityBody = TimeSpan.FromSeconds( 60 );
+            _listener.TimeoutManager.EntityBody = TimeSpan.FromSeconds( 30 );
+            _listener.TimeoutManager.HeaderWait = TimeSpan.FromSeconds( 30 );
+            _listener.TimeoutManager.IdleConnection = TimeSpan.FromSeconds( 120 );
             
             this.IsListening = false;
             this.DirIndex = config.DirIndex;
@@ -63,10 +86,13 @@ namespace Interspecific.Server
             this.Tag = tag;
             this.ServerHeader = config.ServerHeader;
       
-            this.WebRoot = config.WebRoot;
-            if (object.ReferenceEquals(this.WebRoot, null))
+            if (config.WebRoot == null)
             {
                 this.WebRoot = Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), "webroot");
+            }
+            else
+            {
+                this.WebRoot = config.WebRoot;
             }
          
             this._routeCache = new RouteCache(this, this.BaseUrl, this.AutoLoadRestResources);
@@ -74,26 +100,6 @@ namespace Interspecific.Server
             this._listener.OnContext += new Action<HttpListenerContext>(QueueRequest);
         }
         
-        private bool VerifyWebRoot(string webroot)
-        {
-            if (!Object.ReferenceEquals(webroot, null))
-            {
-                try
-                {
-                    if (!Directory.Exists(webroot))
-                    {
-                        Directory.CreateDirectory(webroot);
-                    }
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    EventLogger.Log(e);
-                }
-            }
-            return false;
-        }
-
         #endregion
         #region Public Properties
 
@@ -158,7 +164,9 @@ namespace Interspecific.Server
         public string DirIndex { get; set; }
 
         /// <summary>
-        /// Specifies the top-level directory containing website content; value will not be set unless the directory exists or can be created
+        /// Specifies the top-level directory containing website content; 
+        /// directory will be created if it does not exist. On failure, exceptions
+        /// will be thrown.
         /// </summary>
         public string WebRoot
         {
@@ -168,10 +176,13 @@ namespace Interspecific.Server
             }
             set
             {
-                if (VerifyWebRoot(value))
-                {
-                    this._webroot = value;
-                }
+                if (null == value)
+                    throw new ArgumentException("may not be null", "webroot");
+                    
+                if (!Directory.Exists(value))
+                    Directory.CreateDirectory(value);
+                    
+                this._webroot = value;
             }
         }
         private string _webroot;
@@ -189,16 +200,10 @@ namespace Interspecific.Server
             }
             set
             {
-                if (!this.IsListening)
-                {
-                    this._host = value;
-                }
-                else
-                {
-                    var e = new ServerStateException("Attempted to modify Host property after server start.");
-                    EventLogger.Log(e);
-                    throw e;
-                }
+                if (this.IsListening)
+                    throw new ServerStateException("Attempted to modify Host property after server start.");
+
+                this._host = value;
             }
         }
         private string _host;
@@ -214,16 +219,10 @@ namespace Interspecific.Server
             }
             set
             {
-                if (!this.IsListening)
-                {
-                    this._port = value;
-                }
-                else
-                {
-                    var e = new ServerStateException("Attempted to modify Port property after server start.");
-                    EventLogger.Log(e);
-                    throw e;
-                }
+                if (this.IsListening)
+                    throw new ServerStateException("Attempted to modify Port property after server start.");
+                    
+                this._port = value;
             }
         }
         private string _port;
@@ -250,25 +249,13 @@ namespace Interspecific.Server
             }
             set
             {
-                if (!this.IsListening)
-                {
-                    if (value >= 1)
-                    {
-                        this._maxt = value;
-                    }
-                    else
-                    {
-                        var e = new ServerStateException("MaxThreads cannot be set to a value less than 1");
-                        EventLogger.Log(e);
-                        throw e;
-                    }
-                }
-                else
-                {
-                    var e = new ServerStateException("Attempted to modify MaxThreads property after server start.");
-                    EventLogger.Log(e);
-                    throw e;
-                }
+                if (this.IsListening)
+                    throw new ServerStateException("Attempted to modify MaxThreads property after server start.");
+                    
+                if (value < 1)
+                    throw new ArgumentException("cannot be less than 1", "MaxThreads");
+
+                this._maxt = value;
             }
         }
         private int _maxt;
@@ -287,11 +274,8 @@ namespace Interspecific.Server
             set
             {
                 if (value < 1)
-                {
-                    var e = new ArgumentException("cannot be less than 1", "MaxPendingRequests");
-                    EventLogger.Log(e);
-                    throw e;
-                }
+                    throw new ArgumentException("cannot be less than 1", "MaxPendingRequests");
+                
                 _maxRequests = value;
             }
             get
@@ -314,30 +298,27 @@ namespace Interspecific.Server
             }
             set
             {
-                if (!this.IsListening)
-                {
-                    this._protocol = value;
-                }
-                else
-                {
-                    var e = new ServerStateException("Attempted to modify Protocol property after server start.");
-                    EventLogger.Log(e);
-                    throw e;
-                }
+                if (this.IsListening)
+                    throw new ServerStateException("Attempted to modify Protocol property after server start.");
+                
+                this._protocol = value;
             }
         }
         private string _protocol;
 
-		/// <summary>
-		/// Arbitary object to tag the server with.
-		/// </summary>
-		/// <value>The tag.</value>
+        /// <summary>
+        /// Arbitary object to tag the server with.
+        /// </summary>
+        /// <value>The tag.</value>
         public object Tag 
         {
-			get;
-			set;
-		}
-      
+            get;
+            set;
+	}
+  
+        /// <summary>
+        /// Content of the HTTP header "Server:". 
+        /// </summary>
         public string ServerHeader
         {
             get;
@@ -363,7 +344,11 @@ namespace Interspecific.Server
 
         /// <summary>
         /// Attempts to start the server; executes delegates for OnBeforeStart and OnAfterStart
+        ///
+        /// Throws exceptions if the server fails to start.
         /// </summary>
+        /// 
+        ///
         public void Start()
         {
             if (!this.IsListening)
@@ -376,6 +361,7 @@ namespace Interspecific.Server
                     this.IsListening = true;
                     this._listener.Prefixes.Add(this.BaseUrl);
 
+                    this._stop.Reset();
                     this._listener.Start();
 
                     for (int i = 0; i < _workers.Length; i++)
@@ -387,10 +373,23 @@ namespace Interspecific.Server
 
                     this.FireDelegate(this.OnAfterStart);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
+                    try 
+                    {
+                        this._stop.Set();
+                        // TODO: clean up any created worker threads
+                        this._listener.Stop();
+                    }
+                    catch (Exception nested) 
+                    {
+                        // do nothing
+                        _trace.TraceInformation("Nested exception in listener startup exception handling: {0}", 
+                                                nested.ToString());
+                    }
+                    
                     this.IsListening = false;
-                    EventLogger.Log(e);
+                    throw;
                 }
             }
         }
@@ -409,54 +408,48 @@ namespace Interspecific.Server
         public void Stop(TimeSpan timeout)
         {
             DateTime startTime = DateTime.Now;
-            try
+            
+            this.FireDelegate(this.OnBeforeStop);
+
+            this._stop.Set();      // Signal worker threads to gracefully stop
+
+            // Use the first half of the timeout for graceful closure.
+            
+            TimeSpan halfTime = new TimeSpan(timeout.Ticks / 2);
+            foreach (Thread worker in this._workers)
             {
-                this.FireDelegate(this.OnBeforeStop);
+                TimeSpan timeLeft = halfTime - (DateTime.Now - startTime);
+                if (timeLeft < TimeSpan.Zero)
+                    timeLeft = TimeSpan.Zero;
 
-                this._stop.Set();      // Signal worker threads to gracefully stop
-
-                // Use the first half of the timeout for graceful closure.
-                
-                TimeSpan halfTime = new TimeSpan(timeout.Ticks / 2);
-                foreach (Thread worker in this._workers)
+                worker.Join(timeLeft);
+            }
+           
+            this._listener.Stop(); // Signal listener to ungracefully stop/forcefully close connections
+           
+            // If any workers still won't exit, forcefully abort them.
+            foreach (Thread worker in this._workers)
+            {
+                if (worker.IsAlive) 
                 {
-                    TimeSpan timeLeft = halfTime - (DateTime.Now - startTime);
+                    TimeSpan timeLeft = timeout - (DateTime.Now - startTime);
                     if (timeLeft < TimeSpan.Zero)
                         timeLeft = TimeSpan.Zero;
-
-                    worker.Join(timeLeft);
-                }
-               
-                this._listener.Stop(); // Signal listener to ungracefully stop/forcefully close connections
-               
-                // If any workers still won't exit, forcefully abort them.
-                foreach (Thread worker in this._workers)
-                {
-                    if (worker.IsAlive) 
-                    {
-                        TimeSpan timeLeft = timeout - (DateTime.Now - startTime);
-                        if (timeLeft < TimeSpan.Zero)
-                            timeLeft = TimeSpan.Zero;
-                            
-                        Trace.TraceInformation("Waiting for unresponsive worker thread: {0} ({1})", worker.Name, timeLeft);
-                        worker.Join(timeLeft);
                         
-                        if (worker.IsAlive) // WHY WON'T YOU DIE?
-                        {
-                            Trace.TraceWarning("Aborting unresponsive HTTP worker thread: {0}", worker.Name);
-                            worker.Abort();
-                        }
+                    _trace.TraceInformation("Waiting for unresponsive worker thread: {0} ({1})", worker.Name, timeLeft);
+                    worker.Join(timeLeft);
+                    
+                    if (worker.IsAlive) // WHY WON'T YOU DIE?
+                    {
+                        _trace.TraceWarning("Aborting unresponsive HTTP worker thread: {0}", worker.Name);
+                        worker.Abort();
                     }
                 }
-               
-                this.IsListening = false;
+            }
+           
+            this.IsListening = false;
 
-                this.FireDelegate(this.OnAfterStop);
-            }
-            catch (Exception e)
-            {
-                EventLogger.Log(e);
-            }
+            this.FireDelegate(this.OnAfterStop);
         }
 
         /// <summary>
@@ -480,9 +473,9 @@ namespace Interspecific.Server
                     context.Response.StatusCode = 503;
                     context.Response.OutputStream.Close();
                     context.Response.Close();
-                    EventLogger.Log(
-                        String.Format( "Request queue max size reached: {0}. Connection refused with 503 error.", 
-                                       MaxPendingRequests ) );
+                    
+                    _trace.TraceWarning("Request queue max size reached: {0}. Connection refused with 503 error.", 
+                                        MaxPendingRequests);
                     return;
                 }
 
@@ -518,15 +511,16 @@ namespace Interspecific.Server
                     this.NotFound(context);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 try
                 {
-                    EventLogger.Log(e);
-                    this.InternalServerError(context, e);
+                    _trace.TraceWarning("Internal error in ProcessRequest(): {0}", ex);
+                    this.InternalServerError(context, ex);
                 }
-                catch (Exception) // We can't even serve an error?
+                catch (Exception nested) // We can't even serve an error?
                 {
+                    _trace.TraceWarning("Nested internal error: could not serve Error 500: {0}", nested.ToString());
                     context.Response.StatusCode = 500; // Maybe we can serve the code
                 }
             }
@@ -560,11 +554,11 @@ namespace Interspecific.Server
 
                     this.ProcessRequest(context);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
                     try
                     {
-                        EventLogger.Log(e);
+                        _trace.TraceError("Unhandled exception in RESTServer worker thread: {0}", ex);
                     }
                     catch
                     {
@@ -599,18 +593,16 @@ namespace Interspecific.Server
             return null;
         }
 
+        /// <summary>
+        /// Fire one of the pre/post/other delegates.
+        /// Delegate exceptions propagate, to be handled by the 
+        /// calling code.
+        /// </summary>
         private void FireDelegate(ToggleServerHandler method)
         {
             if (!object.ReferenceEquals(method, null))
             {
-                try
-                {
-                    method();
-                }
-                catch (Exception e)
-                {
-                    EventLogger.Log(e);
-                }
+                method();
             }
         }
 

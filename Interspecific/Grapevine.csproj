@@ -7,7 +7,7 @@
     <ProjectGuid>{C79E6853-F7A0-426F-883C-169651123256}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Grapevine</RootNamespace>
+    <RootNamespace>Interspecific</RootNamespace>
     <AssemblyName>Interspecific</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,9 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Client\RESTClient.cs" />
-    <Compile Include="Client\RESTRequest.cs" />
-    <Compile Include="Client\RESTResponse.cs" />
     <Compile Include="Server\Config.cs" />
     <Compile Include="Server\RESTCluster.cs" />
     <Compile Include="Server\RESTResource.cs" />
@@ -65,17 +62,14 @@
     <Compile Include="Server\RESTServer.cs" />
     <Compile Include="Server\RouteCache.cs" />
     <Compile Include="Util\ContentType.cs" />
-    <Compile Include="Util\EventLogger.cs" />
     <Compile Include="Util\Exceptions.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\HttpMethod.cs" />
     <Compile Include="Util\Responder.cs" />
-    <Compile Include="Util\Logging\ILog.cs" />
-    <Compile Include="Util\Logging\LogToEventLog.cs" />
-    <Compile Include="Util\Logging\LogToConsole.cs" />
     <Compile Include="Util\MatchExtensions.cs" />
     <Compile Include="Util\StringConverter.cs" />
     <Compile Include="Util\HttpListenerRequestExtensions.cs" />
+    <Compile Include="Server\EmptyClass.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -85,9 +79,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Util\Logging\" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
