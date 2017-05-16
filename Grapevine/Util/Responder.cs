@@ -6,7 +6,7 @@ using System.Text;
 
 using SocketHttpListener.Net;
 
-namespace Grapevine
+namespace Interspecific
 {
     /// <summary>
     /// Provides consistent response handling helper methods.

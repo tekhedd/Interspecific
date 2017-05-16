@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Grapevine.Server
+namespace Interspecific.Server
 {
     /// <summary>
     /// Container class to store and manage starting and stopping multiple RESTServer objects

@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 
-namespace Grapevine.Client
+namespace Interspecific.Client
 {
     /// <summary>
     /// Returned by RESTClient.Execute()

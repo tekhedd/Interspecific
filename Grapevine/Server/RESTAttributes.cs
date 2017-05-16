@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Grapevine.Server
+namespace Interspecific.Server
 {
     /// <summary>
     /// <para>Method attribute for defining a RESTRoute</para>

@@ -1,9 +1,9 @@
 ﻿using System;
-using Grapevine.Server;
+using Interspecific.Server;
 
-namespace Grapevine.Util.Logging
+namespace Interspecific.Util.Logging
 {
-    public class LogToConsole : Grapevine.Util.Logging.ILog
+    public class LogToConsole : Interspecific.Util.Logging.ILog
     {
         public LogToConsole ()
         {

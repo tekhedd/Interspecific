@@ -8,7 +8,7 @@ using System.Threading;
 
 using SocketHttpListener.Net;
 
-namespace Grapevine.Server
+namespace Interspecific.Server
 {
     /// <summary>
     /// Delegate for pre and post starting and stopping of RESTServer

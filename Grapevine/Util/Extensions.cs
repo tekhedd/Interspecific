@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Grapevine
+namespace Interspecific
 {
     public static class Extensions
     {

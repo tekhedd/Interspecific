@@ -9,8 +9,8 @@ using NUnit.Framework;
 using SocketHttpListener.Net;
 
 // Us.
-using Grapevine;
-using Grapevine.Server;
+using Interspecific;
+using Interspecific.Server;
 
 
 [TestFixture]

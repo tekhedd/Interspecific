@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Grapevine.Util.Logging
+namespace Interspecific.Util.Logging
 {
     public interface ILog
     {

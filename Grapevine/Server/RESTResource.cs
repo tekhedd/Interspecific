@@ -1,4 +1,4 @@
-﻿namespace Grapevine.Server
+﻿namespace Interspecific.Server
 {
     /// <summary>
     /// Class to be searched for RESTRoutes, extends Responder

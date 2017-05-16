@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using Grapevine.Util.Logging;
+using Interspecific.Util.Logging;
 
-namespace Grapevine
+namespace Interspecific
 {
     /// <summary>
     /// Static class for recording logs in an EventLog. The EventLog property must be set or nothing will be logged.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Grapevine
+namespace Interspecific
 {
     /// <summary>
     /// MIME type of the body of the request or response

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Grapevine
+namespace Interspecific
 {
    /// <summary>
    /// Extension methods to retrieve values from the URL match patterns.

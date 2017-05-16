@@ -1,4 +1,4 @@
-﻿namespace Grapevine
+﻿namespace Interspecific
 {
     /// <summary>
     /// Http methods (or verbs) to indicate the desired action to be performed on the resource

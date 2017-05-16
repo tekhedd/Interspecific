@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Grapevine.Client
+namespace Interspecific.Client
 {
     /// <summary>
     /// Contains all data required to send a request to a RESTClient

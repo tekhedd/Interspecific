@@ -7,7 +7,7 @@ using System.Web;
 
 using SocketHttpListener.Net;
 
-namespace Grapevine.Server
+namespace Interspecific.Server
 {
     /// <summary>
     /// Externally, a route is a decorated method. Internally, a route is a

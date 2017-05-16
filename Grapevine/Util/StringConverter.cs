@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Grapevine
+namespace Interspecific
 {
    public static class StringConverter
    {

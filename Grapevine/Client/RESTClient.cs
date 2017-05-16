@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Text.RegularExpressions;
 
-namespace Grapevine.Client
+namespace Interspecific.Client
 {
     /// <summary>
     /// Represents a server exposing resources to interact with

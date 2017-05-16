@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Grapevine
+namespace Interspecific
 {
     /// <summary>
     /// The exception that is thrown when there is an attempt to modify the Protocol, Host, Port or MaxThreads property of a running instance of RESTServer.

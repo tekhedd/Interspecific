@@ -1,4 +1,4 @@
-﻿namespace Grapevine.Server
+﻿namespace Interspecific.Server
 {
     /// <summary>
     /// A serializable configuration object for configuring a RESTServer.

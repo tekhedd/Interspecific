@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using Grapevine.Util.Logging;
+using Interspecific.Util.Logging;
 
-namespace Grapevine.Util.Logging
+namespace Interspecific.Util.Logging
 {
     /// <summary>
     /// Delegate returns a custom string representation of an exception object.

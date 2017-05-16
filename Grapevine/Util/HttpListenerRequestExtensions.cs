@@ -3,7 +3,7 @@ using System.Text;
 
 using SocketHttpListener.Net;
 
-namespace Grapevine
+namespace Interspecific
 {
    /// <summary>
    /// Extension methods to assist in parsing URL strings.
