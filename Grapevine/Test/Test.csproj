@@ -44,12 +44,12 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Patterns.Logging">
-      <HintPath>..\packages\Patterns.Logging.1.0.0.2\lib\portable-net45+sl4+wp71+win8+wpa81\Patterns.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="Patterns.Logging">
+      <HintPath>..\packages\Patterns.Logging.1.0.0.6\lib\portable-net45+win8\Patterns.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="SocketHttpListener">
-      <HintPath>..\packages\SocketHttpListener.1.0.0.40\lib\net45\SocketHttpListener.dll</HintPath>
+      <HintPath>..\packages\tekhedd.SocketHttpListener.1.0.0\lib\net45\SocketHttpListener.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

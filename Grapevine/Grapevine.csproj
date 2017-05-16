@@ -46,11 +46,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="SocketHttpListener">
-      <HintPath>packages\SocketHttpListener.1.0.0.40\lib\net45\SocketHttpListener.dll</HintPath>
-    </Reference>
     <Reference Include="Patterns.Logging">
-      <HintPath>packages\Patterns.Logging.1.0.0.3\lib\portable-net45+dnxcore50+sl4+wp71+win8+wpa81\Patterns.Logging.dll</HintPath>
+      <HintPath>packages\Patterns.Logging.1.0.0.6\lib\portable-net45+win8\Patterns.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="SocketHttpListener">
+      <HintPath>packages\tekhedd.SocketHttpListener.1.0.0\lib\net45\SocketHttpListener.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

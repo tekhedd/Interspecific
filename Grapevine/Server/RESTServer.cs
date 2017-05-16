@@ -23,7 +23,7 @@ namespace Grapevine.Server
 
         private readonly Thread[] _workers;
 
-        private readonly HttpListener _listener = new HttpListener();
+        private readonly HttpListener _listener;
         private readonly ManualResetEvent _stop = new ManualResetEvent(false);
         private readonly ManualResetEvent _ready = new ManualResetEvent(false);
         private Queue<HttpListenerContext> _queue = new Queue<HttpListenerContext>();
@@ -48,6 +48,10 @@ namespace Grapevine.Server
 
         public RESTServer(Config config, object tag = null) 
         {
+            // TODO: create Patterns.Logging logger to feed Tracelog, or update
+            //       HttpListener to use Trace properly.
+            this._listener = new HttpListener();
+            
             this.IsListening = false;
             this.DirIndex = config.DirIndex;
       
