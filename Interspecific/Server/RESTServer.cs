@@ -31,7 +31,7 @@ namespace Interspecific.Server
         /// <summary>
         /// Trace source for the Interspecific.Server namespace. Add trace listeners
         /// </summary>
-        private readonly TraceSource _trace;
+        private readonly FunctionalTraceSource _trace;
         
         /// <summary>
         /// Trace source for the HttpListener
@@ -58,8 +58,9 @@ namespace Interspecific.Server
 
         public RESTServer(Config config, object tag = null) 
         {
-            this._trace = new TraceSource( config.TraceSourceName );
-            this._httpTraceSource = new TraceSource(config.TraceSourceName + ".HttpListener");
+            this._trace = new FunctionalTraceSource( config.TraceSourceName, config.TraceSourceLevel );
+            
+            this._httpTraceSource = new TraceSource(config.TraceSourceName + ".HttpListener", config.TraceSourceLevel);
             
             // TODO: update HttpListener to use Trace / TraceSource.
             this._listener = new HttpListener(new GenericTraceLogger(this._httpTraceSource));
@@ -463,6 +464,15 @@ namespace Interspecific.Server
             _trace.Listeners.Add(listener);
             _httpTraceSource.Listeners.Add(listener);
         }
+        
+        /// <summary>
+        /// Remove all trace listeners.
+        /// </summary>
+        public void ClearTraceListeners()
+        {
+            _trace.Listeners.Clear();
+            _httpTraceSource.Listeners.Clear();
+        }
 
         #endregion
 
@@ -519,7 +529,7 @@ namespace Interspecific.Server
             {
                 try
                 {
-                    _trace.TraceWarning("Internal error in ProcessRequest(): {0}", ex);
+                    _trace.TraceInformation("Internal error in ProcessRequest(): {0}", ex);
                     this.InternalServerError(context, ex);
                 }
                 catch (Exception nested) // We can't even serve an error?

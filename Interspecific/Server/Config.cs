@@ -1,4 +1,6 @@
-﻿namespace Interspecific.Server
+﻿using System.Diagnostics;
+
+namespace Interspecific.Server
 {
     /// <summary>
     /// A serializable configuration object for configuring a RESTServer.
@@ -57,6 +59,11 @@
         /// </summary>
         public string TraceSourceName { get; set; }
         
+        /// <summary>
+        /// Trace level. Defaults to Warning. 
+        /// </summary>
+        public SourceLevels TraceSourceLevel { get; set; }
+        
         public Config()
         {
             this.Protocol = "http";
@@ -67,6 +74,7 @@
             this.AutoLoadRestResources = true;
             this.ServerHeader = null;
             this.TraceSourceName = "Interspecific.Server";
+            this.TraceSourceLevel = SourceLevels.Warning;
         }
     }
 }
