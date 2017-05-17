@@ -68,7 +68,7 @@
     <Compile Include="Util\MatchExtensions.cs" />
     <Compile Include="Util\StringConverter.cs" />
     <Compile Include="Util\HttpListenerRequestExtensions.cs" />
-    <Compile Include="Server\EmptyClass.cs" />
+    <Compile Include="Server\TraceSourceExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
