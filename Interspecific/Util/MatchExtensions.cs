@@ -10,6 +10,8 @@ namespace Interspecific
    public static class MatchExtensions
    {
       /// <summary>
+      /// Helper to retrieve URL parameters from the REST server match data.
+      ///
       /// Returns a value from the matches or null if not found. Unescapes the URL
       /// data. Throws RESTArgumentException if the parameter is not found or invalid.
       /// </summary>
@@ -24,7 +26,7 @@ namespace Interspecific
       }
 
       /// <summary>
-      /// Like GetValue(), but also casts the data to whatever type you like.
+      /// Like MatchExtensions.GetValue(), but also casts the data to whatever type you like.
       /// Throws RESTArgumentException if the parameter is not found or invalid.
       /// </summary>
       public static T GetValue<T>( this Match match, string name )

@@ -18,10 +18,7 @@
             }
             set
             {
-                if (this.IsNot<RESTServer>())
-                {
-                    this._server = value;
-                }
+                this._server = value;
             }
         }
     }

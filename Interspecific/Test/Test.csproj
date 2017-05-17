@@ -53,9 +53,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Grapevine.csproj">
+    <ProjectReference Include="..\Interspecific.csproj">
       <Project>{C79E6853-F7A0-426F-883C-169651123256}</Project>
-      <Name>Grapevine</Name>
+      <Name>Interspecific</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

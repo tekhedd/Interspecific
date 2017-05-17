@@ -218,7 +218,14 @@ namespace Interspecific.Server
             List<RESTResource> resources = new List<RESTResource>();
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                if (assembly.FullName.Matches(@"^(microsoft|mscorlib|vshost|system|grapevine)")) { continue; }
+                // Don't autoload resources from libraries!
+                if (Regex.IsMatch(assembly.FullName, 
+                                  @"^(microsoft|mscorlib|vshost|system|grapevine|interspecific)", 
+                                  RegexOptions.IgnoreCase))
+                { 
+                    continue; 
+                }
+                
                 foreach (Type type in assembly.GetTypes())
                 {
                     if ((!type.IsAbstract) && (type.IsSubclassOf(typeof(RESTResource))))

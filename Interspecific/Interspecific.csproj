@@ -63,7 +63,6 @@
     <Compile Include="Server\RouteCache.cs" />
     <Compile Include="Util\ContentType.cs" />
     <Compile Include="Util\Exceptions.cs" />
-    <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\HttpMethod.cs" />
     <Compile Include="Util\Responder.cs" />
     <Compile Include="Util\MatchExtensions.cs" />

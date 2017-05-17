@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grapevine", "Grapevine.csproj", "{C79E6853-F7A0-426F-883C-169651123256}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interspecific", "Interspecific.csproj", "{C79E6853-F7A0-426F-883C-169651123256}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{52A720C7-A613-46F9-866C-F64B6D4AB4C5}"
 EndProject
