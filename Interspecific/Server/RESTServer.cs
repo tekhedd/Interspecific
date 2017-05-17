@@ -34,16 +34,10 @@ namespace Interspecific.Server
         private readonly TraceSource _trace;
         
         /// <summary>
-        /// Add/remove trace listeners to this server's trace source via this collection.
+        /// Trace source for the HttpListener
         /// </summary>
-        public TraceListenerCollection Listeners 
-        {
-            get
-            {
-                return _trace.Listeners;
-            }
-        }
-
+        private readonly TraceSource _httpTraceSource;
+        
         #endregion
 
         #region Constructors
@@ -65,9 +59,10 @@ namespace Interspecific.Server
         public RESTServer(Config config, object tag = null) 
         {
             this._trace = new TraceSource( config.TraceSourceName );
+            this._httpTraceSource = new TraceSource(config.TraceSourceName + ".HttpListener");
             
             // TODO: update HttpListener to use Trace / TraceSource.
-            this._listener = new HttpListener();
+            this._listener = new HttpListener(new GenericTraceLogger(this._httpTraceSource));
             
             // TODO: don't use hard coded timeouts
             _listener.TimeoutManager.DrainEntityBody = TimeSpan.FromSeconds( 60 );
@@ -458,6 +453,15 @@ namespace Interspecific.Server
         public void Dispose()
         {
             this.Stop();
+        }
+
+        /// <summary>
+        /// Add trace listeners to this server's trace source(s)
+        /// </summary>
+        public void AddTraceListener(TraceListener listener)
+        {
+            _trace.Listeners.Add(listener);
+            _httpTraceSource.Listeners.Add(listener);
         }
 
         #endregion

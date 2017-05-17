@@ -3,6 +3,8 @@ using System.Diagnostics;
 
 namespace Interspecific.Server
 {
+    /// <summary>
+    /// Extensions to the TraceSource class to make it more like Debug.Trace.
     internal static class TraceSourceExtensions
     {
         /// <summary>
