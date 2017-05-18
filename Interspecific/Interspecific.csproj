@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="nuget pack Interspecific.nuspec" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="nuget pack Interspecific.nuspec -OutputDirectory bin" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
