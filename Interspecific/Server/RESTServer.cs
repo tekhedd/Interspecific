@@ -21,7 +21,7 @@ namespace Interspecific.Server
 
         private readonly RouteCache _routeCache;
 
-        private readonly Thread[] _workers;
+        private readonly List<Thread> _workers = new List<Thread>();
 
         private readonly HttpListener _listener;
         private readonly ManualResetEvent _stop = new ManualResetEvent(false);
@@ -92,7 +92,6 @@ namespace Interspecific.Server
             }
          
             this._routeCache = new RouteCache(this, this.BaseUrl, this.AutoLoadRestResources);
-            this._workers = new Thread[this.MaxThreads];
             this._listener.OnContext += new Action<HttpListenerContext>(QueueRequest);
         }
         
@@ -360,11 +359,14 @@ namespace Interspecific.Server
                     this._stop.Reset();
                     this._listener.Start();
 
-                    for (int i = 0; i < _workers.Length; i++)
+                    Debug.Assert(this._workers.Count == 0, "Should not have any worker threads when not listening");
+                    this._workers.Clear();
+                    for (int i = 0; i < this.MaxThreads; i++)
                     {
-                        _workers[i] = new Thread(Worker);
-                        _workers[i].Name = String.Format("HTTP Listener[{0}]", i);
-                        _workers[i].Start();
+                        Thread worker = new Thread(Worker);
+                        worker.Name = String.Format("HTTP Listener[{0}]", i);
+                        worker.Start();
+                        this._workers.Add(worker);
                     }
 
                     this.FireDelegate(this.OnAfterStart);
@@ -373,9 +375,7 @@ namespace Interspecific.Server
                 {
                     try 
                     {
-                        this._stop.Set();
-                        // TODO: clean up any created worker threads
-                        this._listener.Stop();
+                        _StopInternal(TimeSpan.FromSeconds(10));
                     }
                     catch (Exception nested) 
                     {
@@ -403,10 +403,15 @@ namespace Interspecific.Server
         /// </summary>
         public void Stop(TimeSpan timeout)
         {
+            this.FireDelegate(this.OnBeforeStop);
+            _StopInternal(timeout);
+            this.FireDelegate(this.OnAfterStop);
+        }
+        
+        private void _StopInternal(TimeSpan timeout)
+        {
             DateTime startTime = DateTime.Now;
             
-            this.FireDelegate(this.OnBeforeStop);
-
             this._stop.Set();      // Signal worker threads to gracefully stop
 
             // Use the first half of the timeout for graceful closure.
@@ -414,14 +419,27 @@ namespace Interspecific.Server
             TimeSpan halfTime = new TimeSpan(timeout.Ticks / 2);
             foreach (Thread worker in this._workers)
             {
-                TimeSpan timeLeft = halfTime - (DateTime.Now - startTime);
-                if (timeLeft < TimeSpan.Zero)
-                    timeLeft = TimeSpan.Zero;
+                if (worker.IsAlive)
+                {
+                    TimeSpan timeLeft = halfTime - (DateTime.Now - startTime);
+                    if (timeLeft < TimeSpan.Zero)
+                        timeLeft = TimeSpan.Zero;
 
-                worker.Join(timeLeft);
+                    worker.Join(timeLeft);
+                }
             }
-           
-            this._listener.Stop(); // Signal listener to ungracefully stop/forcefully close connections
+         
+            try
+            {  
+                if (this._listener.IsListening)
+                    this._listener.Stop(); // Signal listener to ungracefully stop/forcefully close connections
+            }
+            catch (Exception ex)
+            {
+                // Shutdown failed, but we need to kill threads or else the app can
+                // fail to exit. Do we keep going? Log? Throw later?
+                _trace.TraceWarning("HttpListener.Stop failed: {0}", ex);
+            }
            
             // If any workers still won't exit, forcefully abort them.
             foreach (Thread worker in this._workers)
@@ -442,10 +460,9 @@ namespace Interspecific.Server
                     }
                 }
             }
-           
+            
+            this._workers.Clear();
             this.IsListening = false;
-
-            this.FireDelegate(this.OnAfterStop);
         }
 
         /// <summary>
