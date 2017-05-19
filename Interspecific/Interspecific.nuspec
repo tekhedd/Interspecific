@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Interspecific</id>
-    <version>2.0.0.0</version>
+    <version>2.0.1.0</version>
     <title>Interspecific</title>
     <authors>Scott Offen and various project contributors</authors>
     <owners></owners>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Interspecific REST HTTP server framework. See https://github.com/tekhedd/Interspecific</description>
     <releaseNotes>
-        https://github.com/tekhedd/Interspecific/releases/tag/v2.0.0
+        https://github.com/tekhedd/Interspecific/releases/tag/v2.0.1
     </releaseNotes>
     <copyright>Copyright 2014-2017</copyright>
     <tags>REST HTTP C# Networking</tags>
