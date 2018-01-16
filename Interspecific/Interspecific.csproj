@@ -32,7 +32,11 @@
     <WarningLevel>4</WarningLevel>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="nuget pack Interspecific.nuspec -OutputDirectory bin" workingdir="${ProjectDir}" />
+        <Command>
+          <type>AfterBuild</type>
+          <command>nuget pack Interspecific.nuspec -OutputDirectory bin</command>
+          <workingdir>${ProjectDir}</workingdir>
+        </Command>
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -46,11 +50,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Patterns.Logging">
-      <HintPath>packages\Patterns.Logging.1.0.0.6\lib\portable-net45+win8\Patterns.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="SocketHttpListener">
-      <HintPath>packages\tekhedd.SocketHttpListener.1.0.0\lib\net45\SocketHttpListener.dll</HintPath>
+      <HintPath>packages\tekhedd.SocketHttpListener.1.0.1\lib\net45\SocketHttpListener.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -68,7 +69,6 @@
     <Compile Include="Util\MatchExtensions.cs" />
     <Compile Include="Util\StringConverter.cs" />
     <Compile Include="Util\HttpListenerRequestExtensions.cs" />
-    <Compile Include="Server\GenericTraceLogger.cs" />
     <Compile Include="Server\FunctionalTraceSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

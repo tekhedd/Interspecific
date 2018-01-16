@@ -63,7 +63,7 @@ namespace Interspecific.Server
             this._httpTraceSource = new TraceSource(config.TraceSourceName + ".HttpListener", config.TraceSourceLevel);
             
             // TODO: update HttpListener to use Trace / TraceSource.
-            this._listener = new HttpListener(new GenericTraceLogger(this._httpTraceSource));
+            this._listener = new HttpListener(this._httpTraceSource);
             
             // TODO: don't use hard coded timeouts
             _listener.TimeoutManager.DrainEntityBody = TimeSpan.FromSeconds( 60 );
