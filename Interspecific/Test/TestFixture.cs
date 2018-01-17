@@ -25,7 +25,8 @@ public class TestFixture
       Protocol = "http",
       Host = "localhost",
       Port = "8123",
-      WebRoot = "../../Data/web",
+      // Path to our web test dir relative to Test/bin/Debug. Will get 404 errors if this is wrong
+      WebRoot = TestContext.CurrentContext.TestDirectory + "/../../Data/web",
       DirIndex = "myindex.html",
       MaxThreads = 3,
       AutoLoadRestResources = false,
@@ -35,7 +36,7 @@ public class TestFixture
    
    RESTServer _host;
    
-   [TestFixtureSetUp]
+   [OneTimeSetUp]
    public void SetUp() 
    {
       _host = new RESTServer( config );
@@ -43,7 +44,7 @@ public class TestFixture
       _host.Start();
    }
 
-   [TestFixtureTearDown]
+   [OneTimeTearDown]
    public void TearDown()
    {
       _host.Stop();
