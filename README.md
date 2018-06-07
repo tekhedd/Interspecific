@@ -1,7 +1,7 @@
 Moved
 =====
 
-This repository is maintained at https://gitlab.com/derbyinsight/Interspecific
+This repository is now at https://gitlab.com/derbyinsight/Interspecific
 
 Interspecific
 =============
